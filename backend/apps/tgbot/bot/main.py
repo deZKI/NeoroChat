@@ -3,6 +3,7 @@ from aiogram import Bot, Dispatcher, types, filters, enums
 
 from ai.gigachat import GigaChatService
 from apps.tgbot.models import ChatHistory
+from apps.users.models import UserExtended
 
 from .middlewares import AuthMiddleware
 
@@ -28,9 +29,12 @@ async def handle_message(message: types.Message):
     # Отправляем запрос в GigaChat
     response = GigaChatService.get_response(user_query)
 
+    user = await UserExtended.objects.aget(
+        username=user_id
+    )
     # Сохраняем запрос и ответ в базу данных
     await ChatHistory.objects.acreate(
-        user_id=user_id,
+        user=user,
         request_text=user_query,
         response_text=response
     )
