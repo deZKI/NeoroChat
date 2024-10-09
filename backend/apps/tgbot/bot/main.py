@@ -5,6 +5,8 @@ from ai.gigachat import GigaChatService
 from apps.tgbot.models import ChatHistory
 from apps.users.models import UserExtended
 
+from .keyboards import start_keyboard, handle_keyboard
+
 from .middlewares import AuthMiddleware
 
 TOKEN = settings.TELEGRAM_BOT_API_TOKEN
@@ -17,7 +19,9 @@ dp.message.outer_middleware(AuthMiddleware())
 
 @dp.message(filters.Command("start"))
 async def send_welcome(message: types.Message):
-    await message.reply("Привет! Отправь мне любой запрос, и я постараюсь помочь.")
+
+    await message.reply("Привет! Выбери одну из опций или отправь любой запрос, и я постараюсь помочь.",
+                        reply_markup=start_keyboard)
 
 
 @dp.message()
@@ -39,8 +43,10 @@ async def handle_message(message: types.Message):
         response_text=response
     )
 
-    # Отправляем ответ пользователю
-    await message.reply(f"Ответ GigaChat: {response}", parse_mode=enums.ParseMode.MARKDOWN)
+    # Клавиатура с дополнительными действиями
+
+    # Отправляем ответ пользователю с клавиатурой
+    await message.reply(f"Ответ GigaChat: {response}", reply_markup=handle_keyboard, parse_mode=enums.ParseMode.MARKDOWN)
 
 
 async def set_commands(bot: Bot):
