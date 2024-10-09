@@ -1,8 +1,14 @@
 services:
   core:
     build: backend
-    entrypoint: ["sh", "entrypoint.sh"]
+    command: python manage.py runserver 0.0.0.0:8000 & python manage.py start_bot
     ports:
       - "8000:8000"
+    env_file:
+      - .env
+
+  bot:
+    build: backend
+    command: python manage.py start_bot
     env_file:
       - .env

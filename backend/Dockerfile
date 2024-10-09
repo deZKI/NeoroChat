@@ -8,6 +8,3 @@ COPY . /app
 
 # Установка poetry и зависимостей проекта
 RUN pip install -r requirements.txt
-
-# Делаем entrypoint скрипт исполняемым
-RUN chmod +x entrypoint.sh

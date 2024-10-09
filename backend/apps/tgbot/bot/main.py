@@ -29,7 +29,7 @@ async def handle_message(message: types.Message):
     response = GigaChatService.get_response(user_query)
 
     # Сохраняем запрос и ответ в базу данных
-    ChatHistory.objects.acreate(
+    await ChatHistory.objects.acreate(
         user_id=user_id,
         request_text=user_query,
         response_text=response
