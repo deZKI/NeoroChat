@@ -9,7 +9,6 @@ echo "Migrations"
 python manage.py start_bot &
 echo "start_bott"
 
-gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers=4
 # Start server
 echo "Starting server"
 python manage.py runserver
